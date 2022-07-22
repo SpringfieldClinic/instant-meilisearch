@@ -26,9 +26,7 @@ export function SearchCache(
       searchCache[key] = JSON.stringify(searchResponse)
     },
     clearCache: function () {
-      console.log('cache', searchCache)
       searchCache = {}
-      console.log('cached cleared', searchCache)
     },
   }
 }

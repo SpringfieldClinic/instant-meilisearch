@@ -50,7 +50,6 @@ export function instantMeiliSearch(
       return cache
     },
     clearCache(): void {
-      console.log('clearCache')
       cache.clearCache()
     },
 
