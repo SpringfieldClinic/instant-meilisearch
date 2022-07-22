@@ -1,9 +1,9 @@
 import {
-  SearchContext,
   MeiliSearch,
+  MeiliSearchParams,
   MeiliSearchResponse,
   SearchCacheInterface,
-  MeiliSearchParams,
+  SearchContext,
 } from '../../types'
 import { addMissingFacets, extractFacets } from './filters'
 
@@ -49,6 +49,7 @@ export function SearchResolver(cache: SearchCacheInterface) {
       // hits are already cached.
       const paginationCache = searchContext.finitePagination ? {} : pagination
 
+      // Do a check here whether the search is cached or not
       // Create cache key containing a unique set of search parameters
       const key = cache.formatKey([
         searchParams,

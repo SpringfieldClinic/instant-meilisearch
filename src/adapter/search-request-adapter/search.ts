@@ -1,8 +1,8 @@
 import {
-  SearchContext,
+  MeiliSearch,
   MeiliSearchParams,
   MeiliSearchResponse,
-  MeiliSearch,
+  SearchContext,
 } from '../../types'
 /**
  * @param  {MeiliSearch} client
