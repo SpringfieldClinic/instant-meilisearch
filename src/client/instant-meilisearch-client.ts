@@ -59,42 +59,38 @@ export function instantMeiliSearch(
     search: async function <T = Record<string, any>>(
       instantSearchRequests: readonly AlgoliaMultipleQueriesQuery[]
     ): Promise<{ results: Array<AlgoliaSearchResponse<T>> }> {
-      try {
-        const searchRequest = instantSearchRequests[0]
-        const searchContext: SearchContext = createSearchContext(
-          searchRequest,
-          instantMeiliSearchOptions,
-          defaultFacetDistribution
-        )
+      const searchRequest = instantSearchRequests[0]
+      const searchContext: SearchContext = createSearchContext(
+        searchRequest,
+        instantMeiliSearchOptions,
+        defaultFacetDistribution
+      )
 
-        // Adapt search request to Meilisearch compliant search request
-        const adaptedSearchRequest = adaptSearchParams(searchContext)
+      // Adapt search request to Meilisearch compliant search request
+      const adaptedSearchRequest = adaptSearchParams(searchContext)
 
-        // Search response from Meilisearch
-        const searchResponse = await searchResolver.searchResponse(
-          searchContext,
-          adaptedSearchRequest,
-          meilisearchClient
-        )
+      // Search response from Meilisearch
+      const searchResponse = await searchResolver.searchResponse(
+        searchContext,
+        adaptedSearchRequest,
+        meilisearchClient
+      )
 
-        // Cache first facets distribution of the instantMeilisearch instance
-        // Needed to add in the facetDistribution the fields that were not returned
-        // When the user sets `keepZeroFacets` to true.
-        defaultFacetDistribution = cacheFirstFacetDistribution(
-          defaultFacetDistribution,
-          searchResponse
-        )
+      // Cache first facets distribution of the instantMeilisearch instance
+      // Needed to add in the facetDistribution the fields that were not returned
+      // When the user sets `keepZeroFacets` to true.
+      defaultFacetDistribution = cacheFirstFacetDistribution(
+        defaultFacetDistribution,
+        searchResponse
+      )
 
-        // Adapt the Meilisearch responsne to a compliant instantsearch.js response
-        const adaptedSearchResponse = adaptSearchResponse<T>(
-          searchResponse,
-          searchContext
-        )
-        return adaptedSearchResponse
-      } catch (e: any) {
-        console.error(e)
-        throw new Error(e)
-      }
+      // Adapt the Meilisearch responsne to a compliant instantsearch.js response
+      const adaptedSearchResponse = adaptSearchResponse<T>(
+        searchResponse,
+        searchContext
+      )
+
+      return adaptedSearchResponse
     },
 
     searchForFacetValues: async function (_: any) {
